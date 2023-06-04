@@ -1,0 +1,3 @@
+-> SignalR,sunucu ve istemci arasýnda gerçek zamanlý iletiþim saðlayan bir teknolojidir.
+->HubConnection, SignalR kütüphanesi aracýlýðýyla sunucu ve istemci arasýnda gerçek zamanlý iletiþimi saðlayan bir araçtýr. 
+Bu sayede, web uygulamalarýnda anlýk güncellemeler, sohbet, bildirimler ve diðer gerçek zamanlý özellikleri kolayca uygulayabilirsiniz.
