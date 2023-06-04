@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fsa_final_project</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="uygulamamızın-hikayesi">Uygulamamızın Hikayesi</h1>
+<p>Hep birlikte bir yazılım evi (Software House) kurduğumuzu düşünelim. Bu süreçte bir çok yazılım geliştirme işi alıyor ve başarıyla teslim ediyoruz. Tabii zamanla adımız duyuluyor ve bir e-ticaret sitesinin yöneticisi bizlere ulaşıyor. Büyük bir rakibinin önüne geçebilmek için rakibini ve rakibinin verdiği fiyatları sürekli takip etmek istiyor. Rakibi fiyat kırıyor ise o da kırmak, rakibi indirim yapıyor ise o da yapmak istiyor. Kendisi bizlere kısaca aşağıdaki açıklamaları iletiyor.</p>
+<h1 id="müşteri-i̇htiyaçları">Müşteri İhtiyaçları</h1>
+<p>Müşteri:Rakibimin ürünlerini kazıyabilecek bir bot uygulamasına ihtiyacım var. Bu bot uygulamasını başlattığımda istersem tüm ürünleri, istersem verdiğim sayı kadarını kazımak istiyorum. Bu ürünleri kazırken istersem sadece indirimde olanları, indirimde olmayanları ya da hepsini kazıyabilmeliyim. Bot çalışırken bot’un hangi durumda olduğunu ve neler yaptığını web uygulamanızdaki bir konsol (log) ekranından takip etmek istiyorum. Ayrıca; Ürünler kazındıktan sonra onları sizlerin oluşturacağı bir panelde görüntüleyebilmek ve kendi sistemime aktarabilmem adına bir excel dosyası olarak kaydedebilmek istiyorum. Bir de bot kazıma işlemini bitirince hem uygulama içi bir notifikasyon, hem de e-posta gönderirse süper olur. Hatta bu kısımı uygulamadaki ayarlar kısmına ekleyin ki ben istemezsem kapatabileyim lütfen.</p>
+<p>Rakibimin Website Adresi: <a href="https://finalproject.dotnet.gg">https://finalproject.dotnet.gg</a></p>
+<h2 id="alper-hocanın-yorumları">Alper Hocanın Yorumları</h2>
+<p>Arkadaşlar bu nokta da uygulamamızı 3 ana parçaya bölebileceğimizi düşünüyorum.</p>
+<h3 id="crawler-app-.net---console-application">Crawler App (.NET - Console Application)</h3>
+<p>Bu uygulamamız bizim için veri kazıma işlemlerini gerçekleştirecektir. Veri kazıma işlemleri için Selenium Framework’ü kullanabiliriz. Uygulamamız başladığında kullanıcıya bazı sorular yöneltecektir.</p>
+<p><strong>1-) Kaç tane ürün kazımak istiyorsunuz?</strong><br>
+Kullanıcı hepsi yazabilir veya bir sayı verebilir. Biz gelen veriye göre işlem yapacak şekilde kodlamalıyız. Yani şöyle düşünmelisiniz gelen verinin hangi tipte olduğunu anlayıp, ona göre parse ettikten sonra işlemlerimizde değerlendirmeliyiz. Text de gelebilir, number’da gelebilir…</p>
+<p><strong>2-) Hangi ürünleri kazımak istiyorsunuz?</strong><br>
+A-) Hepsi, B-) İndirimdekiler, C-) Normal Fiyatlı Ürünler</p>
+<p>Kullanıcıdan gerekli geri dönüşleri aldıktan sonra bu bilgiler ile API’ye istek yapıp, yeni bir “Order” oluşturuyoruz. Sonrasında ise rakip siteye konumlanıp, sizlere html elementlerindeki bıraktığım ekmek kırıntılarını (Hansel ve Gratel) takip ederek ürünlerin çekilip, parse edilmesini sağlamalıyız. Yani HTML üzerinden text’leri alıp, bir “Product” class’ına dönüştürmeliyiz.</p>
+<p><strong>Product Örneği</strong></p>
+<pre><code>public  class  Product:EntityBase&lt;Guid&gt;
+{  
+
+public  Guid  OrderId { get; set; }
+
+public  Order  Order { get; set; }
+
+public  string  Name { get; set; }
+
+public  string  Picture { get; set; }
+
+public  bool  IsOnSale { get; set; }
+
+public  decimal  Price { get; set; }
+
+public  decimal  SalePrice { get; set; }   
+
+}
+</code></pre>
+<p>Bu parse edilen ürünleri kullanıcının istediği gibi filtreleyip, API’ye bir istek yapıyoruz. Bu süreçte tabii ki işlemleri web uygulamasındaki konsol ekranına logluyor olmalıyız. (SignalR)<br>
+Örn;</p>
+<ul>
+<li>Websiteye giriş yapıldı. – 01.05.2023 : 12.30</li>
+<li>Toplam 10 sayfa ürün bulunduğu tespit edildi. 01.05.2023 : 12.30</li>
+<li>Birinci sayfa tarandı. Toplam 4 ürün - 01.05.2023 : 12.31</li>
+<li>İkinci sayfa tarandı. Toplam 8 ürün - 01.05.2023 : 12.33</li>
+</ul>
+<p>Mesela uygulama bu süreçte bir hata ile karşılaşırsa aynı şekilde hatayı konsol’a göndermeli ve siparişi hatalı olarak güncellemelidir. Belki kullanıcının notifikasyon ayarlarına göre bir notifikasyon göndermeli ve/veya e-posta göndermelidir.</p>
+<p>Örn: “#1094 numaralı sipariş beklenmedik bir hata ile karşılaştığı için tamamlanamamıştır.”</p>
+<h3 id="web-api-clean-architecture---aspnet-core-7-application">Web API (Clean Architecture - ASPNET Core 7 Application)</h3>
+<p>Bu uygulamamız bizim için uygulamalar arası haberleşmeyi ve veritabanı işlemlerimizi gerçekleştirecektir. Upstorage projemizdeki yapımızı bir-e-bir örnek alabilirsiniz. Bu nokta da isterseniz tüm işlemleri API Requestleri &amp; SignalR üzerinden veya tamamen SignalR üzerinden de halledebilirsiniz. Bilgi, birikim ve yöntem seçiminize göre iki yolda tercih edilebilir. Clean architecture üzerinde “Application katmanından SignalR hub metodları nasıl tetiklenir?” başlığıyla ilgili örnekleri derslerimizde sizlere göstereceğim. O yüzden bu nokta da endişelenmenize gerek yoktur.</p>
+<p><img src="https://i.hizliresim.com/q0pqpkf.png" alt="Haberleşme"></p>
+<p>Bu diagram üzerinde Api Request göndererek veya SignalR kullanarak gerçekleştirebileceğimiz çözüm yollarını görüyoruz.</p>
+<p><strong>Order Event Örneği</strong></p>
+<pre><code>  public  class  OrderEvent:EntityBase&lt;Guid&gt;
+
+{
+
+public  Guid  OrderId { get; set; }
+
+public  Order  Order { get; set; }   
+
+public  OrderStatus  Status { get; set; }             
+
+}
+</code></pre>
+<p><strong>OrderStatus Örneği</strong></p>
+<pre><code>public  enum  OrderStatus
+
+{
+
+BotStarted=1,
+
+CrawlingStarted=2,
+
+CrawlingCompleted=3,
+
+CrawlingFailed = 4,
+
+OrderCompleted =5,
+
+}
+</code></pre>
+<p>Order event’ler bizim sipariş ile ilgili checkpoint’lerimiz gibi düşünülebilir. Sipariş ne zaman başladı, ne zaman bitti vb. bilgileri tutmamızı sağlar. Kargo şirketlerindeki hareket dökümleri gibi düşünebilirsiniz.</p>
+<p>Order (Sipariş) class’ını sizlere bırakıyorum arkadaşlar. Bu noktada bir siparişte müşteri hangi bilgileri bilmek ister diye hikayeye uygun olarak düşünmeliyiz. Mesela; kazınmak istenen ürün sayısı 100 ama biz 60 tane bulduk. Bunları order class’ı içinde bulundurmalıyız.</p>
+<p>Bu uygulamamızda “İletişim Ayarları” kısımıda olması gerekiyor. Kullanıcının bu ayarlar ile ilgili seçim yapacağı küçük bir sayfamız olacaktır.<br>
+Örn: Uygulama içi bilgilendirme, E-Posta ile bilgilendirme seçeneklerinden hangileri seçili ise, bir sipariş tamamlandığında veya hataya düştüğünde bu ayarları kontrol edip, kullanıcıya bilgi vereceğiz. Uygulama içi bilgilendirme açık ise SignalR ile, e-posta seçili ise e-posta göndererek kullanıcıyı bilgilendireceğiz.</p>
+<h2 id="blazor--react-client-application">Blazor / React Client Application</h2>
+<p>Bu uygulamamızda kullanıcının siparişlerini, sipariş detaylarını, siparişe ait ürünlerini görüntüleyeceği sayfalar oluşturmamız gerekiyor. Yapacağımız işlemi daha basit anlatmam gerekirse Bootstrap Table’lar üzerinde verileri görüntüleyeceğiz.</p>
+<p>Örn: <a href="https://getbootstrap.com/docs/5.0/content/tables/">https://getbootstrap.com/docs/5.0/content/tables/</a></p>
+<h4 id="console-sayfamız">Console Sayfamız</h4>
+<p>En basit haliyle bu sayfamızın görevi SignalR üzerinden OrderHub tarafından gönderilen “EventLog” vb. isimli bir metodu dinleyerek oradan gelen tüm verileri (yazıları, mesajları) sayfadaki terminal görüntüsünde şekillendirilmiş kısıma yazdırmaktır.</p>
+<p><strong>Örnekler:</strong></p>
+<ul>
+<li><a href="https://codepen.io/Xaptor/pen/XYVvGG">https://codepen.io/Xaptor/pen/XYVvGG</a></li>
+<li><a href="https://codepen.io/addyosmani/pen/avxmvN">https://codepen.io/addyosmani/pen/avxmvN</a></li>
+<li><a href="https://codeeverywhere.ca/post.php?id=10&amp;title=building-a-terminal-window-using-CSS">https://codeeverywhere.ca/post.php?id=10&amp;title=building-a-terminal-window-using-CSS</a></li>
+</ul>
+<p>Bizim bu tarz bir terminal ekranımız olduğunda buraya düşen yazılar gerçek bir console/terminal ekranında çıkıyormuş gibi gözükecektir.</p>
+<p>Devamı gelecektir…</p>
+</div>
+</body>
+
+</html>
