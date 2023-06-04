@@ -18,7 +18,18 @@
   - Wasm (Blazor ile Loglama)
   - Console (Verileri Kazıma)
 
-## 📝 İsterler
+## 📷 Ekran Görüntüleri
+![resim1](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Loglama.JPG)
+![resim2](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Console.JPG)
+![resim3](https://github.com/busraakay/UpSchool-Final-Project/blob/main/api.JPG)
+
+## 📝 Notlar
+- Projede veritabanı olarak PostgreSql kullanılmıştır.
+- Email'ler her OrderEvent eklendiğinde gitmektedir.
+- Projenin React ile olan kısmı kısa süre içerisinde eklenecektir. 
+- Projeyi başlatmak için veritabanı işlemlerini yaptıktan sonra WebApi-Console-Wasm projelerini Startup olarak seçmek gerekmektedir.
+
+## 🎯  İsterler
 
 ### Uygulamamızın Hikayesi
 Hep birlikte bir yazılım evi (Software House) kurduğumuzu düşünelim. Bu süreçte bir çok yazılım geliştirme işi alıyor ve başarıyla teslim ediyoruz. Tabii zamanla adımız duyuluyor ve bir e-ticaret sitesinin yöneticisi bizlere ulaşıyor. Büyük bir rakibinin önüne geçebilmek için rakibini ve rakibinin verdiği fiyatları sürekli takip etmek istiyor. Rakibi fiyat kırıyor ise o da kırmak, rakibi indirim yapıyor ise o da yapmak istiyor. Kendisi bizlere kısaca aşağıdaki açıklamaları iletiyor.
