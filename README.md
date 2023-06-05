@@ -18,16 +18,16 @@
   - Wasm (Blazor ile Loglama)
   - Console (Verileri Kazıma)
 
-## 📷 Ekran Görüntüleri
-![resim1](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Loglama.JPG)
-![resim2](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Console.JPG)
-![resim3](https://github.com/busraakay/UpSchool-Final-Project/blob/main/api.JPG)
-
 ## 📝 Notlar
 - Projede veritabanı olarak PostgreSql kullanılmıştır.
 - Email'ler her OrderEvent eklendiğinde gitmektedir.
 - Projenin React ile olan kısmı kısa süre içerisinde eklenecektir. 
 - Projeyi başlatmak için veritabanı işlemlerini yaptıktan sonra WebApi-Console-Wasm projelerini Startup olarak seçmek gerekmektedir.
+
+## 📷 Ekran Görüntüleri
+![resim1](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Loglama.JPG)
+![resim2](https://github.com/busraakay/UpSchool-Final-Project/blob/main/Console.JPG)
+![resim3](https://github.com/busraakay/UpSchool-Final-Project/blob/main/api.JPG)
 
 ## 🎯  İsterler
 
